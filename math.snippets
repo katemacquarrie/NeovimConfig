@@ -1,0 +1,283 @@
+########################################
+# TEXT HANDLING
+########################################
+
+snippet it "The \textit{} command for italic font"
+\textit{${1:${VISUAL:}}}$0
+endsnippet
+
+#snippet cb "Wrap selection in comment environment" v
+#\begin{comment}
+#${VISUAL}
+#\end{comment}
+#endsnippet
+#
+
+########################################
+# MATH MODE
+########################################
+
+# Inline math
+snippet mm "The $$ command for math mode" wA
+$${1}$`!p
+if t[2] and t[2][0] not in [',','.','?','-',' ']:
+	snip.rv = ''
+else:
+	snip.rv = ''
+`$2
+endsnippet
+
+# Display math
+snippet dm "The \[...\] command for displaying math" wA
+\[
+$1
+\] $0
+endsnippet
+
+# Functions
+snippet lra "Longright arrow"
+\longrightarrow $0
+endsnippet
+
+# Epsilon 
+snippet \eps "epsilon"
+\epsilon
+endsnippet
+
+########################################
+# SUBSCRIPTS & SUPERSCRIPTS
+########################################
+
+# Auto subscript (single digit)
+snippet '([A-Za-z])(\d)' "auto subscript" wrA
+`!p snip.rv = match.group(1)`_`!p snip.rv = match.group(2)`
+endsnippet
+
+# Auto subscript (double digit)
+snippet '([A-Za-z])_(\d\d)' "auto subscript2" wrA
+`!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`}
+endsnippet
+
+# Auto subscript long
+snippet od "subscript" 
+_{$1}$0
+endsnippet
+
+# Superscript
+snippet td "superscript" iA
+^{$1}$0
+endsnippet
+
+
+########################################
+# CATEGORY THEORY
+########################################
+
+# Blackboard bold
+snippet bb "The \mathbb{} command for bold math"
+\mathbb{$1}$0
+endsnippet
+
+snippet cal "The \mathcal{} command for cal math"
+\mathcal{$1}$0
+endsnippet
+
+# Adjunction template
+snippet adj "Set up an adjunction template"
+(F,U,\eta,\epsilon):\mathbb{X}\longrightarrow \mathbb{A}$0
+endsnippet
+
+# Adjunction diagram
+snippet adjcd "Adjunction diagram"
+\[\begin{tikzcd}
+	{\mathbb{A}} & {\mathbb{X}}
+	\arrow[""{name=0, anchor=center, inner sep=0}, "U", shift left=2, from=1-1, to=1-2]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "F", shift left=2, from=1-2, to=1-1]
+	\arrow["\dashv"{anchor=center, rotate=90}, draw=none, from=1, to=0]
+\end{tikzcd}\]
+$0
+endsnippet
+
+# Monad template
+snippet mon "Set up a monad template"
+(T,\eta, \mu): \mathbb{X} \longrightarrow \mathbb{X}$0
+endsnippet
+
+# Monad diagram
+snippet moncd "Set up a monad diagram"
+
+endsnippet
+
+
+
+########################################
+# GENERAL UTILITIES
+########################################
+
+# Today’s date
+snippet today "Date"
+`date +%F`
+endsnippet
+
+# Generic environment
+snippet beg "The \begin{} / \end{} command for generic environment" bA
+\begin{$1}
+	$2
+\end{$1}
+$0
+endsnippet
+
+
+
+########################################
+# DOCUMENT TEMPLATES
+########################################
+
+# Full notes template
+snippet notebook "To create a notes document that I use frequently"
+\documentclass{article}
+\usepackage[center]{titlesec}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{comment}
+\usetikzlibrary{cd}
+\usepackage{lmodern}
+
+\titleformat{\section}[block]{\normalsize\filcenter}{\thesection}{1em}{\MakeUppercase}
+
+
+\title{Notes Template}
+\author{Kate Birch}
+\date{\today}
+
+\begin{document}
+
+\pagenumbering{gobble}
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\pagenumbering{arabic}
+\section{Section}
+
+\end{document}
+endsnippet
+
+
+# Lightweight template
+snippet quicknote "Creating a quick LaTeX document"
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{Blank}
+\author{Kate Birch}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\end{document}
+endsnippet
+
+
+
+########################################
+# THEOREM ENVIRONMENTS
+########################################
+
+snippet thms "Creating definitions"
+\numberwithin{equation}{section}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{Remark}
+endsnippet
+
+########################################
+# BIBLIOGRAPHY
+########################################
+
+# Include biblatex
+snippet usebib "Include bibliography in preamble"
+% Add references.bib to your src
+\usepackage[style=numeric]{biblatex} 
+
+% Add bibliography
+\addbibresource{references.bib} 
+endsnippet
+
+
+# Print bibliography
+snippet printbib "Print bibliography"
+\printbibliography
+endsnippet
+
+
+# Book reference
+snippet bibbook "Add a book as a reference"
+@book{$0,
+	author    = {$0},
+	title     = {$0},
+	year      = {$0},
+	publisher = {$0},
+}
+$1
+endsnippet
+
+
+# Misc reference
+snippet bibmisc "Add misc as a reference"
+@book{$0,
+	author    = {$0},
+	title     = {$0},
+	year      = {$0},
+	note	    = {$0},
+}
+$1
+endsnippet
+
+
+# Article reference
+snippet bibart "Add article as a reference"
+@article{$0,
+	author    = {$0},
+	title     = {$0},
+	journal   = {$0},
+	year	    = {$0},
+}
+$1
+endsnippet
+
+
+########################################
+# HYPERREF
+########################################
+
+# Use as last package
+snippet hyperref "Set up hyperref"
+\usepackage{hyperref}
+\usepackage{cleveref}
+\hypersetup{
+	colorlinks=true,   % sets links to be colored (false by default)
+	linktoc=all,       % links both the section name and page number (options: 'section' or 'page')
+	linkcolor=blue,    % internal links color (e.g., to sections, figures)
+	citecolor=green,   % color for citation links
+	urlcolor=cyan,     % color for URL links
+}
+$0
+endsnippet
